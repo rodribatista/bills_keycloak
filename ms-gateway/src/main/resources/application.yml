@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9090
 
 eureka:
   instance:
@@ -16,6 +16,8 @@ spring:
     name: ms-gateway
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
       routes:
         - id: ms-bill
           uri: lb://ms-bill
@@ -23,3 +25,17 @@ spring:
             - Path=/api/v1/**
           filters:
             - StripPrefix=2
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak-provider:
+            issuer-uri: http://localhost:8080/realms/dh_bills
+        registration:
+          api-gateway:
+            provider: keycloak-provider
+            client-id: bills-client
+            client-secret: ubhexVfNy6KHaN5EWiEYK79iCO8NVClR
+            scope: openid
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:9090/login/oauth2/code/keycloak
