@@ -17,15 +17,15 @@ import javax.persistence.Table;
 @Table
 public class Bill {
 
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    private String idBill;
+  @Id
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+  private String idBill;
 
-    private String customerBill;
+  private String customerBill;
 
-    private String productBill;
+  private String productBill;
 
-    private Double totalPrice;
+  private Double totalPrice;
 
 }

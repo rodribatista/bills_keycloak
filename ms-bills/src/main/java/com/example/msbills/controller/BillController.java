@@ -15,11 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BillController {
 
-    private final BillService service;
+  private final BillService service;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Bill>> getAll() {
-        return ResponseEntity.ok().body(service.getAllBill());
-    }
+  @GetMapping("/all")
+  public ResponseEntity<List<Bill>> getAll() {
+    return ResponseEntity.ok().body(service.getAllBill());
+  }
 
 }

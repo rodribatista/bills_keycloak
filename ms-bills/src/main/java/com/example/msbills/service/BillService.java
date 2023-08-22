@@ -11,10 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BillService {
 
-    private final BillRepository repository;
+  private final BillRepository repository;
 
-    public List<Bill> getAllBill() {
-        return repository.findAll();
-    }
+  public List<Bill> getAllBill() {
+    return repository.findAll();
+  }
 
 }
