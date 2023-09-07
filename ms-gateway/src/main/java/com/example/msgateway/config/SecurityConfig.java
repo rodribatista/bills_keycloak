@@ -20,14 +20,15 @@ public class SecurityConfig {
   @Bean
   public SecurityWebFilterChain securityWebFilterChain (
       ServerHttpSecurity http) {
-    http.authorizeExchange()
-        .anyExchange()
-        .authenticated()
-        .and()
-        .oauth2Login()
-        .and()
-        .logout()
-        .logoutSuccessHandler(oidcServerLogoutSuccessHandler());
+    http
+      .authorizeExchange()
+      .anyExchange()
+      .authenticated()
+      .and()
+      .oauth2Login()
+      .and()
+      .logout()
+      .logoutSuccessHandler(oidcServerLogoutSuccessHandler());
     return http.build();
   }
 
