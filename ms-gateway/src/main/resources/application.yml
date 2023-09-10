@@ -1,16 +1,6 @@
 server:
   port: 9090
 
-eureka:
-  instance:
-    hostname: localhost
-    prefer-ip-address: true
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
-
 spring:
   application:
     name: ms-gateway
@@ -39,3 +29,11 @@ spring:
             scope: openid
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:9090/login/oauth2/code/keycloak
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
