@@ -13,8 +13,12 @@ public class BillService {
 
   private final BillRepository repository;
 
-  public List<Bill> getAllBill() {
+  public List<Bill> getAllBills() {
     return repository.findAll();
+  }
+
+  public List<Bill> getBillsByUserId(String id) {
+    return repository.getBillsByCustomerBill(id);
   }
 
 }

@@ -2,6 +2,8 @@ package com.example.keycloak.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -14,5 +16,6 @@ public class User {
   private String email;
   private String firstName;
   private String lastName;
+  private List<Bill> bills;
 
 }
