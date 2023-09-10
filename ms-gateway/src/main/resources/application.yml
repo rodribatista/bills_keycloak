@@ -9,10 +9,16 @@ spring:
       default-filters:
         - TokenRelay
       routes:
-        - id: ms-bill
-          uri: lb://ms-bill
+        - id: ms-bills
+          uri: lb://ms-bills
           predicates:
-            - Path=/api/v1/**
+            - Path=/api/v1/bills/**
+          filters:
+            - StripPrefix=2
+        - id: ms-users
+          uri: lb://ms-users
+          predicates:
+            - Path=/api/v1/users/**
           filters:
             - StripPrefix=2
   security:
