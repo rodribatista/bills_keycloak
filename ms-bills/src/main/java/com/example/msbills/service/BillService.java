@@ -21,4 +21,9 @@ public class BillService {
     return repository.getBillsByCustomerBill(id);
   }
 
+  public String createNewBill(Bill bill) {
+    Bill createdBill = repository.save(bill);
+    return createdBill.getIdBill();
+  }
+
 }

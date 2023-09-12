@@ -27,4 +27,10 @@ public class BillController {
     return ResponseEntity.ok().body(service.getBillsByUserId(id));
   }
 
+  @PostMapping()
+  @PreAuthorize("hasRole('ROLE_provider')")
+  public ResponseEntity<String> createNewBill(@RequestBody Bill bill) {
+    return ResponseEntity.ok().body(service.createNewBill(bill));
+  }
+
 }
