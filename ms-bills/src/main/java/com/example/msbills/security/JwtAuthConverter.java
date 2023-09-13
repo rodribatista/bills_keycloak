@@ -38,54 +38,66 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
   public Collection<GrantedAuthority> getGrantedAuthorities(Jwt source) throws JsonProcessingException {
     return (Collection) Stream.concat(this.jwtGrantedAuthoritiesConverter
-            .convert(source).stream(),
-        extractResourceRoles(source).stream()).collect(Collectors.toSet());
+        .convert(source).stream(),
+      extractResourceRoles(source).stream()).collect(Collectors.toSet());
   }
 
   private static Collection<? extends GrantedAuthority> extractResourceRoles(
-      final Jwt jwt) throws JsonProcessingException {
+    final Jwt jwt) throws JsonProcessingException {
     Set<GrantedAuthority> resourcesRoles = new HashSet();
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
     resourcesRoles.addAll(extractRoles("resource_access",
-        objectMapper.readTree(objectMapper.writeValueAsString(jwt)).get("claims")));
+      objectMapper.readTree(objectMapper.writeValueAsString(jwt)).get("claims")));
     resourcesRoles.addAll(extractRolesRealmAccess("realm_access",
-        objectMapper.readTree(objectMapper.writeValueAsString(jwt)).get("claims")));
+      objectMapper.readTree(objectMapper.writeValueAsString(jwt)).get("claims")));
     resourcesRoles.addAll(extractAud("aud",
-        objectMapper.readTree(objectMapper.writeValueAsString(jwt)).get("claims")));
+      objectMapper.readTree(objectMapper.writeValueAsString(jwt)).get("claims")));
+    resourcesRoles.addAll(extractGroups("groups",
+      objectMapper.readTree(objectMapper.writeValueAsString(jwt)).get("claims")));
     return resourcesRoles;
   }
 
   private static List<GrantedAuthority> extractRoles(String route, JsonNode jwt) {
     Set<String> rolesWithPrefix = new HashSet<>();
     jwt.path(route)
+      .elements()
+      .forEachRemaining(e -> e.path("roles")
         .elements()
-        .forEachRemaining(e -> e.path("roles")
-            .elements()
-            .forEachRemaining(r -> rolesWithPrefix.add("ROLE_" + r.asText())));
+        .forEachRemaining(r -> rolesWithPrefix.add("ROLE_" + r.asText())));
     final List<GrantedAuthority> authorityList =
-        AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
+      AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
     return authorityList;
   }
 
   private static List<GrantedAuthority> extractRolesRealmAccess(String route, JsonNode jwt) {
     Set<String> rolesWithPrefix = new HashSet<>();
     jwt.path(route)
-        .path("roles")
-        .elements()
-        .forEachRemaining(r -> rolesWithPrefix.add("ROLE_" + r.asText()));
+      .path("roles")
+      .elements()
+      .forEachRemaining(r -> rolesWithPrefix.add("ROLE_" + r.asText()));
     final List<GrantedAuthority> authorityList =
-        AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
+      AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
     return authorityList;
   }
 
   private static List<GrantedAuthority> extractAud(String route, JsonNode jwt) {
     Set<String> rolesWithPrefix = new HashSet<>();
     jwt.path(route)
-        .elements()
-        .forEachRemaining(e ->rolesWithPrefix.add("AUD_" + e.asText()));
+      .elements()
+      .forEachRemaining(e -> rolesWithPrefix.add("AUD_" + e.asText()));
     final List<GrantedAuthority> authorityList =
-        AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
+      AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
+    return authorityList;
+  }
+
+  private static List<GrantedAuthority> extractGroups(String route, JsonNode jwt) {
+    Set<String> groupsWithPrefix = new HashSet<>();
+    jwt.path(route)
+      .elements()
+      .forEachRemaining(e -> groupsWithPrefix.add("GROUP_" + e.asText()));
+    final List<GrantedAuthority> authorityList =
+      AuthorityUtils.createAuthorityList(groupsWithPrefix.toArray(new String[0]));
     return authorityList;
   }
 
