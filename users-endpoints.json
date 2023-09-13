@@ -1,0 +1,16 @@
+{
+  "user_autorized": [
+      { "method": "GET", "url": "http://localhost:9090/api/v1/bills/all" },
+      { "method": "GET", "url": "http://localhost:9090/api/v1/users/username=johndoe" },
+      { "method": "GET", "url": "http://localhost:9090/api/v1/users/email=janedoe@mail.com" }
+  ],
+  "user_not_autorized": [
+    { "method": "GET", "url": "http://localhost:9090/api/v1/users/username=johndoe" },
+    { "method": "GET", "url": "http://localhost:9090/api/v1/users/email=janedoe@mail.com" }
+  ],
+  "user_provider": [
+	{ "method": "POST", "url": "http://localhost:54867/bills" },
+    { "method": "GET", "url": "http://localhost:9090/api/v1/users/username=johndoe" },
+    { "method": "GET", "url": "http://localhost:9090/api/v1/users/email=janedoe@mail.com" }
+  ]
+}
